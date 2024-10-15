@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    .container {
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: green;
+      overflow: hidden;
+    }
+
+    .items {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      list-style: none;
+    }
+
+    .item {
+      min-width: 300px;
+      height: 190px;
+      background: tomato;
+      margin-right: 20px;
+      line-height: 190px;
+      text-align: center;
+      font-size: 24px;
+      color: white;
+    }
+
+    .spacer {
+      height: 300px;
+      text-align: center;
+      line-height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <ul class="items scrollx-section">
+        <li class="item">1</li>
+        <li class="item">2</li>
+        <li class="item">3</li>
+        <li class="item">4</li>
+        <li class="item">5</li>
+        <li class="item">6</li>
+        <li class="item">7</li>
+        <li class="item">8</li>
+        <li class="item">9</li>
+        <li class="item">10</li>
+        <li class="item">11</li>
+        <li class="item">12</li>
+        <li class="item">13</li>
+        <li class="item">14</li>
+        <li class="item">15</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="spacer">1</div>
+  <div class="spacer"></div>
+  <div class="spacer"></div>
+  <div class="spacer"></div>
+  <div class="spacer"></div>
+  <div class="spacer"></div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js'
+    integrity='sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=='
+    crossorigin='anonymous'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js'
+    integrity='sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=='
+    crossorigin='anonymous'></script>
+  <script>
+    let items = document.querySelector(".items"),
+      pageWrapper = document.querySelector(".page-wrapper");
+    let localItems = document.querySelectorAll(".item"),
+      distance = () => {
+        let lastItemBounds = localItems[localItems.length - 1].getBoundingClientRect(),
+          containerBounds = items.getBoundingClientRect();
+        return lastItemBounds.right - containerBounds.right;
+      };
+
+    gsap.to('.items', {
+      x: () => -distance(), // make sure it dynamically calculates things so that it adjusts to resizes
+      ease: "none",
+      scrollTrigger: {
+        trigger: '.items',
+        start: "top top",
+        // pinnedContainer: pageWrapper,
+        end: () => "+=" + distance(),
+        pin: '.section',
+        scrub: true,
+        // invalidateOnRefresh: true // will recalculate any function-based tween values on resize/refresh (making it responsive)
+        markers: true,
+      }
+    })
+  </script>
+</body>
+
+</html>
